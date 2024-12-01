@@ -160,9 +160,8 @@ let similarity_score lhs rhs =
 
 let allocated = GC.GetAllocatedBytesForCurrentThread()
 let stopWatch = Stopwatch.StartNew()
-printfn $"Part 1: {(data ||> magic_number_1)}"
+printfn $"Part 1: {(data ||> magic_number)}"
 printfn $"Part 2: {(data ||> similarity_score)}"
 stopWatch.Stop()
 printfn $"Execution time: {stopWatch.Elapsed.TotalMilliseconds}"
 printfn $"Memory used: {(GC.GetAllocatedBytesForCurrentThread() - allocated)} B"
-printfn $"Vector count {Vector<int>.Count}, {sizeof<int>}"
