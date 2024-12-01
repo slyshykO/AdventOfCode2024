@@ -79,6 +79,8 @@ let inline arrayMap (vf : ^T Vector -> ^U Vector) (sf : ^T -> ^U) (array : ^T[])
 
     result
 
+let allocated = GC.GetAllocatedBytesForCurrentThread()
+let stopWatch = Stopwatch.StartNew()
 let data =
     IO.File.ReadAllLines(inputPath)
     |> Array.map (fun x -> dataLineToTuple x)
@@ -158,8 +160,6 @@ let similarity_score lhs rhs =
 
     lhs |> Array.map (fun x -> (count rhs x) * x) |> arraySumV512
 
-let allocated = GC.GetAllocatedBytesForCurrentThread()
-let stopWatch = Stopwatch.StartNew()
 printfn $"Part 1: {(data ||> magic_number)}"
 printfn $"Part 2: {(data ||> similarity_score)}"
 stopWatch.Stop()
