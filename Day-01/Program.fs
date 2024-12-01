@@ -85,14 +85,14 @@ let data =
     |> Array.unzip
     ||> (fun xx yy -> (Array.sort xx, Array.sort yy))
 
-let magic_number lhs rhs =
-    (lhs, rhs) ||> Array.zip |> Array.map (fun (l, r) -> abs (l - r)) |> arraySumV512
+let inline magic_number_arr lhs rhs =
+    (lhs, rhs) ||> Array.zip |> Array.map (fun (l, r) -> abs (l - r)) |> Array.sum
 
 let magic_number_V512 (lhs:^T[]) (rhs:^T[]) : ^T =
     let count = Vector512< ^T>.Count
     let mutable state = Vector512< ^T>.Zero
 
-    let cm (vl:Vector512< ^T>) (vr:Vector512< ^T>) : Vector512< ^T> = 
+    let inline cm (vl:Vector512< ^T>) (vr:Vector512< ^T>) : Vector512< ^T> = 
         Vector512.Abs (vl - vr)
 
     let mutable i = 0
@@ -115,6 +115,42 @@ let magic_number_V512 (lhs:^T[]) (rhs:^T[]) : ^T =
 
     result
 
+let magic_number_V256 (lhs:^T array) (rhs:^T array) : ^T =
+    let count = Vector256< ^T>.Count
+    let mutable state = Vector256< ^T>.Zero
+
+    let inline cm (vl:Vector256< ^T>) (vr:Vector256< ^T>) : Vector256< ^T> = 
+        Vector256.Abs (vl - vr)
+
+    let mutable i = 0
+    while i <= lhs.Length-count do
+        let v1 = Vector256.Create(lhs ,i)
+        let v2 = Vector256.Create(rhs,i)
+        state <- state + (cm v1 v2)
+        i <- i + count
+
+    let mutable result = Unchecked.defaultof< ^T>
+    i <- lhs.Length-lhs.Length%count
+    while i < lhs.Length do
+        result <- result + abs(lhs.[i] - rhs.[i])
+        i <- i + 1
+
+    i <- 0
+    while i < count do
+        result <- result + state.[i]
+        i <- i + 1
+
+    result
+
+let magic_number lhs rhs =
+    magic_number_arr lhs rhs
+
+let magic_number_1 lhs rhs =
+    magic_number_V256 lhs rhs
+
+let magic_number_2 lhs rhs =
+    magic_number_V512 lhs rhs
+
 let similarity_score lhs rhs =
 
     let count arr x =
@@ -124,7 +160,7 @@ let similarity_score lhs rhs =
 
 let allocated = GC.GetAllocatedBytesForCurrentThread()
 let stopWatch = Stopwatch.StartNew()
-printfn $"Part 1: {(data ||> magic_number)}"
+printfn $"Part 1: {(data ||> magic_number_1)}"
 printfn $"Part 2: {(data ||> similarity_score)}"
 stopWatch.Stop()
 printfn $"Execution time: {stopWatch.Elapsed.TotalMilliseconds}"
