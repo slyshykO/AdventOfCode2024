@@ -1,0 +1,8 @@
+.vs/
+.vscode/
+build/
+bin/
+out/
+obj/
+.fake
+*.exe
