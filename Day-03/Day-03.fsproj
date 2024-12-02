@@ -4,10 +4,17 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>Day_03</RootNamespace>
+      <OptimizationPreference>Speed</OptimizationPreference>
+      <IlcInstructionSet>native</IlcInstructionSet>
+      <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Utils\Utils.fsproj" />
   </ItemGroup>
 
 </Project>

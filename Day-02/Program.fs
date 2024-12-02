@@ -1,7 +1,6 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
 open System
 open System.Diagnostics
-open System.Numerics.Tensors
 
 printfn "Advent of code 2024 Day 2"
 
