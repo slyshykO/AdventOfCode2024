@@ -99,22 +99,14 @@ let canRemoveProblem2 (a : int array) (problems: int array): bool =
 
 
 testData 
-|> Array.map 
- (fun x -> 
-    let mutable result = Array.create (x.Length-1) 0
-    for i in 0..x.Length-2 do
-        result.[i] <- (x.[i] - x.[i+1])
-    result)
-|> Array.filter 
- (fun x -> 
-    x |> Array.filter (fun x -> abs (x) < 1 || abs (x) >3) |> Array.length = 0)
-|> Array.filter 
- (fun x -> 
-    let sum = x |> Array.sum 
-    let abs_sum = x |> Array.map abs |> Array.sum
-    printArray x
-    $"Abs sum:{abs_sum} Sum:{sum}" |> Say.print
-    abs_sum = abs(sum))
+|> Array.mapi 
+ (fun i x -> 
+    let problem = problemIndexes x
+    $"#{i}| " |> Say.print
+    printArrayWithProblems x problem
+    $"| {problem.Length}\n" |> Say.print
+    problem.Length)
+|> Array.filter  (fun x ->  x = 0)
 |> (fun x -> Say.print($"Test Safe: {x.Length}"))
 
 printfn "\n---\n"
@@ -158,33 +150,13 @@ let data =
     |> Array.map dataLineToArray
 
 data
-|> Array.map 
- (fun x -> 
-    let mutable result = Array.create (x.Length-1) 0
-    for i in 0..x.Length-2 do
-        result.[i] <- (x.[i] - x.[i+1])
-    result)
-|> Array.filter 
- (fun x -> 
-    x |> Array.filter (fun x -> abs (x) < 1 || abs (x) >3) |> Array.length = 0)
-|> Array.filter 
- (fun x -> 
-    let sum = x |> Array.sum 
-    let abs_sum = x |> Array.map abs |> Array.sum
-    abs_sum = abs(sum))
+|> Array.map  (fun x -> x |> problemIndexes |> Array.length)
+|> Array.filter  (fun x ->  x = 0)
 |> (fun x -> Console.WriteLine($"Real Safe: {x.Length}"))
 
 data 
-|> Array.mapi 
- (fun i x -> 
-    let problems = problemIndexes x
-    (i,x,problems))
-|> Array.filter 
- (fun (i,x,problems) -> 
-    $"#{i}| " |> Say.print
-    let c =canRemoveProblem2 x problems
-    $"| {c}\n" |> Say.print
-    c)
+|> Array.map (fun  x -> (x, (problemIndexes x)))
+|> Array.filter (fun (x,problems) -> canRemoveProblem2 x problems)
 |> (fun x -> Console.WriteLine($"Restored safe: {x.Length}"))
 
 stopWatch.Stop()
