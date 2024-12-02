@@ -163,5 +163,6 @@ let similarity_score lhs rhs =
 printfn $"Part 1: {(data ||> magic_number)}"
 printfn $"Part 2: {(data ||> similarity_score)}"
 stopWatch.Stop()
-printfn $"Execution time: {stopWatch.Elapsed.TotalMilliseconds}"
-printfn $"Memory used: {(GC.GetAllocatedBytesForCurrentThread() - allocated)} B"
+printfn $"Day 1:"
+printfn $"    Execution time: {stopWatch.Elapsed.TotalMilliseconds} ms"
+printfn $"    Memory used: {(GC.GetAllocatedBytesForCurrentThread() - allocated)} B"
