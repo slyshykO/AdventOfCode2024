@@ -16,12 +16,21 @@ module Say =
         if verbosity_ > 0 then
             Console.Write(msg)
 
+    let printForce (msg: string) = 
+        Console.Write(msg)
+
     let printColor (color: ConsoleColor) (msg: string) =
         if verbosity_ > 0 then
             let oldColor = Console.ForegroundColor
             Console.ForegroundColor <- color
             Console.Write(msg)
             Console.ForegroundColor <- oldColor
+
+    let printColorForce (color: ConsoleColor) (msg: string) =
+        let oldColor = Console.ForegroundColor
+        Console.ForegroundColor <- color
+        Console.Write(msg)
+        Console.ForegroundColor <- oldColor
 
     let printYellow (msg: string) = printColor ConsoleColor.Yellow msg
 
@@ -31,9 +40,11 @@ module Say =
 
     let printBlue (msg: string) = printColor ConsoleColor.Blue msg
 
+    let printBlueForce (msg: string) = printColorForce ConsoleColor.Blue msg
+
 module Data = 
 
-    let lineToIntArrary (line: string) = 
+    let lineToIntArray (line: string) = 
         line.Split(' ')
         |> Array.filter (fun ff -> ff.Length > 0)
         |> Array.map (fun ss -> ss.Trim())
