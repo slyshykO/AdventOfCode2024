@@ -5,7 +5,7 @@ set saved_dir=%cd%
 set old_path=%PATH%
 
 
-echo run test for `%1%`...
+echo run AOT 2024 `%1%`...
 
 set PRJ=%1%
 

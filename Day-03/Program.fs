@@ -4,7 +4,13 @@ open System.Diagnostics
 open System.Text.RegularExpressions 
 open Utils
 
-Say.printGreen("\n\n\nAdvent of code 2024 Day 3\n")
+let day = 
+    Environment.GetCommandLineArgs() 
+    |> Array.take 1 
+    |> (fun x -> System.IO.Path.GetFileNameWithoutExtension(x.[0]))
+    |> (fun x -> x.Replace("-"," "))
+
+Say.printGreen($"\n\n\nAdvent of code 2024 {day}\n\n")
 
 let testString = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
 let testAnswer = 161 // (2*4 + 5*5 + 11*8 + 8*5)
@@ -98,6 +104,6 @@ Say.printBlueForce($"Result Part two: {result2}\n")
 
 
 stopWatch.Stop()
-printfn $"\n\nDay 2:"
+Say.printForce $"\n\n{day}: \n"
 printfn $"    Execution time: {stopWatch.Elapsed.TotalMilliseconds} ms"
 printfn $"    Memory used: {(GC.GetAllocatedBytesForCurrentThread() - allocated)} B"
